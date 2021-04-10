@@ -1,6 +1,7 @@
 create table Feeds (
 
     feed_id integer not null  primary key autoincrement,
+    title varchar(200) not null,
     description varchar(200) null,
     link varchar(100) not null
     
