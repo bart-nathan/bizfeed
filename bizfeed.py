@@ -3,6 +3,7 @@
 import feedparser
 import os
 import sys
+from datetime import date
 
 
 feed_list = []
@@ -11,6 +12,7 @@ feed_list.append(["Dr Nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyh
 feed_list.append(["Nyborg", "https://fyens.dk/feed/nyborg"])
 feed_list.append(["BBC Europe", "http://feeds.bbci.co.uk/news/world/europe/rss.xml"])
 feed_list.append(["BT", "https://www.bt.dk/bt/seneste/rss"])
+#feed_list.append(["Version2", "https://www.version2.dk/it-nyheder/rss"])
 
 def found_month(init_month):
     
@@ -45,6 +47,7 @@ def get_feeds():
 
     return found_feeds
 
+
 def convert_date(date_string):
     
     split_string = date_string.split(" ")
@@ -64,8 +67,12 @@ def mix_feeds():
 
         for item in item_list:
 
-        
-            found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
+            feed_date = convert_date(item["published"]).split("-")
+            current_date = date.today().strftime("%d-%m-%Y").split("-")
+
+            if (feed_date[0] == current_date[0]) and (feed_date[1] == current_date[1] ):
+
+                found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
             #print("%s | %s | %s" % (item["published"].split(" ")[4], item["title"], one_feed[0]))
     
     #return found_month.sort(reverse=False)
