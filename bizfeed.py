@@ -6,9 +6,9 @@ import sys
 
 
 feed_list = []
-feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
+#feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
 feed_list.append(["Dr Nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyheder"] )
-feed_list.append(["Nyborg", "https://fyens.dk/feed/nyborg"])
+#feed_list.append(["Nyborg", "https://fyens.dk/feed/nyborg"])
 feed_list.append(["Computerworld", "https://www.computerworld.dk/rss/all"])
 
 def found_month(init_month):
@@ -18,7 +18,12 @@ def found_month(init_month):
     for m in months:
 
         if m == init_month:
-            return count + 1
+            
+            if count < 10:
+                return "%s%s" % ("0",count + 1)
+            
+            else:
+                return count + 1
         
         count = count + 1
     
@@ -39,6 +44,14 @@ def get_feeds():
 
     return found_feeds
 
+def convert_date(date_string):
+    
+    split_string = date_string.split(" ")
+    
+    build_string = "%s-%s-%s-%s" % (split_string[1], found_month(split_string[2]), split_string[3], split_string[4])
+
+    return build_string
+
 
 def mix_feeds():
 
@@ -50,12 +63,12 @@ def mix_feeds():
 
         for item in item_list:
 
-
-
-            found_feeds.append([item["published"],item["title"], item["link"], one_feed[0]])
+        
+            found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
             #print("%s | %s | %s" % (item["published"].split(" ")[4], item["title"], one_feed[0]))
     
-    return sorted(found_feeds)
+    #return found_month.sort(reverse=False)
+    return sorted(found_feeds, reverse=True)
 
     #return feedparser.parse(test_link)["entries"]
 
@@ -71,14 +84,15 @@ def display_content():
 
         if command == "list":
             
+            pass
+
             f_list = get_feeds()
 
             for f in f_list:
 
                 count, date, title, link, feed_name = f 
-                print(" %s | %s | %s | %s" % (count,date, title,feed_name))
-
-
+                print("%s | %s | %s | %s" % (count,date,title,feed_name ))
+                
     #except Exception as ex:
      #    print(ex)
 
