@@ -81,10 +81,42 @@ def mix_feeds():
     #return feedparser.parse(test_link)["entries"]
 
 
+def display_menu():
+
+    f_list = get_feeds()
+   
+   
+    command = None
+
+    while command != 'q':
+
+        print("? for help :>", end='')
+        command = input()
+
+        if command == "list":
+           
+            for f in f_list:
+
+                count, date, title, link, feed_name = f 
+                print("%s | %s | %s | %s" % (count,date,title,feed_name ))
+        
+        elif command == "read":
+
+            print("item number :", end='')
+
+            number = input()
+
+            print("number is %s" % number)
+    
+
+    #print(command)
+
+
 def display_content():
 
     try:
 
+        
         command = sys.argv[1]
         f_list = get_feeds()
 
@@ -106,7 +138,10 @@ def display_content():
 
 if __name__ == "__main__":
 
-    display_content()
+    
+    display_menu()
+    
+    #display_content()
 
     #print(found_month("July"))
 
