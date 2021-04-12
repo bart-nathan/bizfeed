@@ -1,16 +1,34 @@
 #!/usr/bin/python
 
 import feedparser
+import os
+import sys
 
 feed_list = []
-feed_list.append(["nyheder", "https://ekstrabladet.dk/rssfeed/all/"] )
-feed_list.append(["nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyheder"] )
+feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
+feed_list.append(["Dr Nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyheder"] )
 
 
+def get_feeds():
+    found_feeds = []
+    count = 0
+    feeds = mix_feeds()
 
-#test_link = "https://ekstrabladet.dk/rssfeed/all/"
+    for f in feeds:
+        
+        date, title, link, feed_name = f
 
-def display_feeds():
+        found_feeds.append([count, date,title,link,feed_name])
+
+        count = count + 1
+
+
+    return found_feeds
+
+
+def mix_feeds():
+
+    found_feeds = []
 
     for one_feed in feed_list:
 
@@ -18,13 +36,10 @@ def display_feeds():
 
         for item in item_list:
 
-             print("%s | %s\n" % (item["published"], item["link"]))
-
-            
-        
-
-        print(one_feed)
+            found_feeds.append([item["published"],item["title"], item["link"], one_feed[0]])
+            #print("%s | %s | %s" % (item["published"].split(" ")[4], item["title"], one_feed[0]))
     
+    return sorted(found_feeds)
 
     #return feedparser.parse(test_link)["entries"]
 
@@ -32,15 +47,24 @@ def display_feeds():
 
 if __name__ == "__main__":
 
-    display_feeds()
+    
+    #try:
 
-'''
-    f_list = get_feeds()
+        command = sys.argv[1]
 
-    for one_feed in f_list:
+        if command == "read":
+            print("read a feed")
 
-        print("%s | %s\n" % (one_feed["published"], one_feed["link"]))
+        if command == "list":
+            
+            f_list = get_feeds()
 
-    print("ok")
+            for f in f_list:
 
-'''
+                count, date, title, link, feed_name = f 
+                print(" %s | %s | %s" % (count,date, feed_name))
+
+
+    #except Exception as ex:
+     #    print(ex)
+
