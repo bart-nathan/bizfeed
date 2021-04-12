@@ -6,7 +6,7 @@ class ItemsModule:
     def __init__(self):
         pass
     
-    def insert_item(self):
+    def insert_item(self, items_list):
         pass
     
     def get_items_from_feed(self,feed_id):
