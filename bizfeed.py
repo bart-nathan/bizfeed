@@ -6,10 +6,11 @@ import sys
 
 
 feed_list = []
-#feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
+feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
 feed_list.append(["Dr Nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyheder"] )
-#feed_list.append(["Nyborg", "https://fyens.dk/feed/nyborg"])
-feed_list.append(["Computerworld", "https://www.computerworld.dk/rss/all"])
+feed_list.append(["Nyborg", "https://fyens.dk/feed/nyborg"])
+feed_list.append(["BBC Europe", "http://feeds.bbci.co.uk/news/world/europe/rss.xml"])
+feed_list.append(["BT", "https://www.bt.dk/bt/seneste/rss"])
 
 def found_month(init_month):
     
@@ -75,26 +76,26 @@ def mix_feeds():
 
 def display_content():
 
-     #try:
+    try:
 
         command = sys.argv[1]
+        f_list = get_feeds()
 
         if command == "read":
-            print("read a feed")
-
-        if command == "list":
             
-            pass
-
-            f_list = get_feeds()
+            number = int(sys.argv[2])
+            os.system("links %s" % (f_list[number][3]))
+           
+        if command == "list":
 
             for f in f_list:
 
                 count, date, title, link, feed_name = f 
                 print("%s | %s | %s | %s" % (count,date,title,feed_name ))
                 
-    #except Exception as ex:
-     #    print(ex)
+    except Exception as ex:
+        
+        print(ex)
 
 if __name__ == "__main__":
 
