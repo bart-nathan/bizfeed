@@ -5,7 +5,6 @@ import os
 import sys
 from datetime import date
 
-
 feed_list = []
 feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
 feed_list.append(["Dr Nyheder", "https://www.dr.dk/nyheder/service/feeds/allenyheder"] )
@@ -34,7 +33,7 @@ def found_month(init_month):
 
 def get_feeds():
     found_feeds = []
-    count = 0
+    count = 1
     feeds = mix_feeds()
 
     for f in feeds:
@@ -70,80 +69,81 @@ def mix_feeds():
             feed_date = convert_date(item["published"]).split("-")
             current_date = date.today().strftime("%d-%m-%Y").split("-")
 
-            if (feed_date[0] == current_date[0]) and (feed_date[1] == current_date[1] ):
-
-                found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
-            #print("%s | %s | %s" % (item["published"].split(" ")[4], item["title"], one_feed[0]))
+            found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
     
-    #return found_month.sort(reverse=False)
     return sorted(found_feeds, reverse=True)
 
-    #return feedparser.parse(test_link)["entries"]
 
+
+def show_feed_list(f_list):
+
+    index = 0
+
+    for f in f_list:
+
+        count, date, title, link, feed_name = f 
+        print("%s | %s | %s | %s" % (count,date,title,feed_name ))
+
+        if index % 20 == 0:
+
+            print(":>", end='')
+        
+            choise = input()
+
+            if  choise != "":
+
+                if (choise == "q"):
+
+                    sys.exit()
+                
+                else:
+                    os.system("links %s" % (f_list[int(choise) - 1][3]))
+
+        index = index + 1
 
 def display_menu():
 
-    f_list = get_feeds()
-   
-   
-    command = None
-
-    while command != 'q':
-
-        print("? for help :>", end='')
-        command = input()
-
-        if command == "list":
-           
-            for f in f_list:
-
-                count, date, title, link, feed_name = f 
-                print("%s | %s | %s | %s" % (count,date,title,feed_name ))
-        
-        elif command == "read":
-
-            print("item number :", end='')
-
-            number = input()
-
-            print("number is %s" % number)
-    
-
-    #print(command)
-
-
-def display_content():
-
     try:
-
-        
-        command = sys.argv[1]
         f_list = get_feeds()
+    
+        command = None
 
-        if command == "read":
+        show_feed_list(f_list)
+
+        while command != 'q':
+
+            print("? for help :>", end='')
+            command = input()
+
+            if command == "list":
+
+                show_feed_list(f_list)
             
-            number = int(sys.argv[2])
-            os.system("links %s" % (f_list[number][3]))
-           
-        if command == "list":
+            elif command == "read":
 
-            for f in f_list:
+                print("item number :", end='')
 
-                count, date, title, link, feed_name = f 
-                print("%s | %s | %s | %s" % (count,date,title,feed_name ))
-                
+                number = int(input())
+
+                os.system("links %s" % (f_list[number - 1][3]))
+                #print("number is %s" % number)
+            
+            elif command == "?":
+
+                print("list     :   get the feedlist")
+                print("read     :   read a feed")
+                print("q        :   quit the program")
+        
     except Exception as ex:
         
         print(ex)
+        
 
 if __name__ == "__main__":
 
     
     display_menu()
     
-    #display_content()
-
-    #print(found_month("July"))
 
     
    
