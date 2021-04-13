@@ -39,22 +39,16 @@ def get_feeds():
     for f in feeds:
         
         date, title, link, feed_name = f
-
         found_feeds.append([count, date,title,link,feed_name])
-
         count = count + 1
 
     return found_feeds
 
-
 def convert_date(date_string):
     
     split_string = date_string.split(" ")
-    
     build_string = "%s-%s-%s-%s" % (split_string[1], found_month(split_string[2]), split_string[3], split_string[4])
-
     return build_string
-
 
 def mix_feeds():
 
@@ -72,8 +66,6 @@ def mix_feeds():
             found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
     
     return sorted(found_feeds, reverse=True)
-
-
 
 def show_feed_list(f_list):
 
@@ -138,13 +130,6 @@ def display_menu():
         
         print(ex)
         
-
 if __name__ == "__main__":
 
-    
     display_menu()
-    
-
-    
-   
-
