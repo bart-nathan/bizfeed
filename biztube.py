@@ -39,17 +39,13 @@ def mix_feeds():
 def get_feeds():
 
     feeds = []
-
     feed_mix = mix_feeds()
-
     index = 0;
 
     for f in feed_mix:
         
         date, title, link, feed_name = f
-        
         feeds.append([index, date, title, link, feed_name ])
-
         index = index + 1
 
     return feeds
@@ -62,8 +58,6 @@ def show_feed_list(feed_list):
 
         print("%s | %s | %s | %s" % (count, date,title, feed_name))
 
-
-
 def cmd():
 
     print("? = help | biztube :>", end="")
@@ -73,11 +67,6 @@ def cmd():
 if __name__ == "__main__":
 
     feed_list = get_feeds()
-
-    #feeds = mix_feeds()
-
-    #for f in feeds:
-     #   print(f)
 
     command = None
 
@@ -97,7 +86,6 @@ if __name__ == "__main__":
         elif command.split(" ")[0] == "play":
             
             number = int(command.split(" ")[1])
-            #print("catt -d Tv cast %s" % (feed_list[number][3]))
             os.system("catt -d Tv cast -f %s" % (feed_list[number][3]))
         elif command == "stop":
 
