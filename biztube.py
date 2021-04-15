@@ -3,7 +3,7 @@
 import feedparser
 import os
 import sys
-from datetime import date
+from datetime import datetime
 
 feed_list = []
 feed_list.append(["Explaining Computers", "https://www.youtube.com/feeds/videos.xml?user=explainingcomputers"])
@@ -13,6 +13,15 @@ feed_list.append(["The Hated One","https://www.youtube.com/feeds/videos.xml?chan
 feed_list.append(["Techlore","https://www.youtube.com/feeds/videos.xml?channel_id=UCs6KfncB4OV6Vug4o_bzijg"])
 feed_list.append(["Techmoan","https://www.youtube.com/feeds/videos.xml?user=Techmoan"])
 feed_list.append(["Lars Muhl","https://www.youtube.com/feeds/videos.xml?channel_id=UCbi5bIFlsLEHwTtzmkBaJ_A"])
+
+
+def handle_date_string(input_string):
+    
+    split_string = input_string.split('T')
+    split_date = split_string[0].split('-')
+    split_time = split_string[1].split('+')[0].split(':')
+
+    return datetime(int(split_date[0]),int(split_date[1]),int(split_date[2]),int(split_time[0]),int(split_time[1]),int(split_time[2]))
 
 
 def mix_feeds():
@@ -25,7 +34,7 @@ def mix_feeds():
         
         for item in item_list:
 
-            found_feeds.append([item["published"],item["title"], item["link"], one_feed[0]])
+            found_feeds.append([handle_date_string(item["published"]),item["title"], item["link"], one_feed[0]])
     
     return sorted(found_feeds, reverse=True)
     
