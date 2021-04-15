@@ -14,7 +14,6 @@ feed_list.append(["Techlore","https://www.youtube.com/feeds/videos.xml?channel_i
 feed_list.append(["Techmoan","https://www.youtube.com/feeds/videos.xml?user=Techmoan"])
 feed_list.append(["Lars Muhl","https://www.youtube.com/feeds/videos.xml?channel_id=UCbi5bIFlsLEHwTtzmkBaJ_A"])
 
-
 def handle_date_string(input_string):
     
     split_string = input_string.split('T')
@@ -22,7 +21,6 @@ def handle_date_string(input_string):
     split_time = split_string[1].split('+')[0].split(':')
 
     return datetime(int(split_date[0]),int(split_date[1]),int(split_date[2]),int(split_time[0]),int(split_time[1]),int(split_time[2]))
-
 
 def mix_feeds():
 
@@ -36,7 +34,7 @@ def mix_feeds():
 
             found_feeds.append([handle_date_string(item["published"]),item["title"], item["link"], one_feed[0]])
     
-    return sorted(found_feeds, reverse=True)
+    return sorted(found_feeds, reverse=False)
     
 def get_feeds():
 
@@ -56,17 +54,13 @@ def get_feeds():
 
     return feeds
 
-
-
 def show_feed_list(feed_list):
-
-    #feed_list = get_feeds()
 
     for f in feed_list:
 
         count, date, title, link, feed_name = f
 
-        print("%s | %s | %s" % (count, title, feed_name))
+        print("%s | %s | %s | %s" % (count, date,title, feed_name))
 
 
 
