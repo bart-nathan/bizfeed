@@ -3,7 +3,7 @@
 import feedparser
 import os
 import sys
-from datetime import date
+from datetime import datetime
 
 feed_list = []
 feed_list.append(["Ekstrabladet", "https://ekstrabladet.dk/rssfeed/all/"] )
@@ -44,7 +44,22 @@ def get_feeds():
 
     return found_feeds
 
-def convert_date(date_string):
+def convert_date(input_string):
+
+    split_string = input_string.split(",")[1].split(" ")
+    time_split = split_string[4].split(":")
+
+    day = int(split_string[1])
+    month =  int(found_month(split_string[2]))
+    year = int(split_string[3])
+    
+    hours = int(time_split[0])
+    minutes = int(time_split[1])
+    seconds = int(time_split[2])
+
+    return datetime(year,month, day, hours,minutes,seconds)
+
+def convert_date_old(date_string):
     
     split_string = date_string.split(" ")
     build_string = "%s-%s-%s-%s" % (split_string[1], found_month(split_string[2]), split_string[3], split_string[4])
@@ -60,12 +75,12 @@ def mix_feeds():
 
         for item in item_list:
 
-            feed_date = convert_date(item["published"]).split("-")
-            current_date = date.today().strftime("%d-%m-%Y").split("-")
+           ## feed_date = convert_date(item["published"]).split("-")
+            ##current_date = datetime.today().strftime("%d-%m-%Y").split("-")
 
             found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
     
-    return sorted(found_feeds, reverse=True)
+    return sorted(found_feeds, reverse=False)
 
 def show_feed_list(f_list):
 
@@ -76,26 +91,9 @@ def show_feed_list(f_list):
         count, date, title, link, feed_name = f 
         print("%s | %s | %s | %s" % (count,date,title,feed_name ))
 
-        if index % 20 == 0:
-
-            print(":>", end='')
-        
-            choise = input()
-
-            if  choise != "":
-
-                if (choise == "q"):
-
-                    sys.exit()
-                
-                else:
-                    os.system("links %s" % (f_list[int(choise) - 1][3]))
-
-        index = index + 1
-
 def display_menu():
 
-    try:
+    #try:
         f_list = get_feeds()
     
         command = None
@@ -111,11 +109,11 @@ def display_menu():
 
                 show_feed_list(f_list)
             
-            elif command == "read":
+            elif command.split(" ")[0] == "read":
 
                 print("item number :", end='')
 
-                number = int(input())
+                number = int(command.split(" ")[1])
 
                 os.system("links %s" % (f_list[number - 1][3]))
                 #print("number is %s" % number)
@@ -126,9 +124,9 @@ def display_menu():
                 print("read     :   read a feed")
                 print("q        :   quit the program")
         
-    except Exception as ex:
+    #except Exception as ex:
         
-        print(ex)
+     #   print(ex)
         
 if __name__ == "__main__":
 
