@@ -65,6 +65,20 @@ def convert_date_old(date_string):
     build_string = "%s-%s-%s-%s" % (split_string[1], found_month(split_string[2]), split_string[3], split_string[4])
     return build_string
 
+def is_today(date_string):
+    
+    now_date = str(datetime.now()).split(" ")[0].split("-")
+    input_date = str(date_string).split(" ")[0].split("-")
+    
+    if (now_date[0] == input_date[0]) and (now_date[1] == input_date[1]) and (now_date[2] == input_date[2]):
+        return True
+     
+    
+    #print(now_date)
+    #print(input_date)
+
+    return False
+
 def mix_feeds():
 
     found_feeds = []
@@ -75,10 +89,11 @@ def mix_feeds():
 
         for item in item_list:
 
-           ## feed_date = convert_date(item["published"]).split("-")
-            ##current_date = datetime.today().strftime("%d-%m-%Y").split("-")
+            feed_date = convert_date(item["published"])
+            
+            if (is_today(feed_date)):
 
-            found_feeds.append([convert_date(item["published"]),item["title"], item["link"], one_feed[0]])
+                found_feeds.append([feed_date,item["title"], item["link"], one_feed[0]])
     
     return sorted(found_feeds, reverse=False)
 
@@ -111,8 +126,6 @@ def display_menu():
             
             elif command.split(" ")[0] == "read":
 
-                print("item number :", end='')
-
                 number = int(command.split(" ")[1])
 
                 os.system("links %s" % (f_list[number - 1][3]))
@@ -130,4 +143,9 @@ def display_menu():
         
 if __name__ == "__main__":
 
+    #result = is_today("2021-04-18")
+
+    #print(result)
+    
     display_menu()
+    #print(datetime.now())
