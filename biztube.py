@@ -22,6 +22,20 @@ def handle_date_string(input_string):
 
     return datetime(int(split_date[0]),int(split_date[1]),int(split_date[2]),int(split_time[0]),int(split_time[1]),int(split_time[2]))
 
+def is_today(date_string):
+    
+    now_date = str(datetime.now()).split(" ")[0].split("-")
+    input_date = str(date_string).split(" ")[0].split("-")
+    
+    if (now_date[0] == input_date[0]) and (now_date[1] == input_date[1]) and (now_date[2] == input_date[2]):
+        return True
+     
+    
+    #print(now_date)
+    #print(input_date)
+
+    return False
+
 def mix_feeds():
 
     found_feeds = []
@@ -32,7 +46,11 @@ def mix_feeds():
         
         for item in item_list:
 
-            found_feeds.append([handle_date_string(item["published"]),item["title"], item["link"], one_feed[0]])
+            pub_date = handle_date_string(item["published"])
+
+            if is_today(pub_date):
+
+                found_feeds.append([pub_date,item["title"], item["link"], one_feed[0]])
     
     return sorted(found_feeds, reverse=False)
     
@@ -64,9 +82,10 @@ def cmd():
     command = input()
     return command
 
-if __name__ == "__main__":
+def display_menu():
 
     feed_list = get_feeds()
+    show_feed_list(feed_list)
 
     command = None
 
@@ -87,6 +106,12 @@ if __name__ == "__main__":
             
             number = int(command.split(" ")[1])
             os.system("catt -d Tv cast -f %s" % (feed_list[number][3]))
+        
         elif command == "stop":
 
              os.system("catt -d Tv stop")
+
+if __name__ == "__main__":
+
+    display_menu()
+    
