@@ -59,12 +59,6 @@ def convert_date(input_string):
 
     return datetime(year,month, day, hours,minutes,seconds)
 
-def convert_date_old(date_string):
-    
-    split_string = date_string.split(" ")
-    build_string = "%s-%s-%s-%s" % (split_string[1], found_month(split_string[2]), split_string[3], split_string[4])
-    return build_string
-
 def is_today(date_string):
     
     now_date = str(datetime.now()).split(" ")[0].split("-")
